@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "postinstall": "yarn prisma generate",
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "prisma:generate": "prisma generate",
@@ -12,8 +12,6 @@
   },
   "dependencies": {
     "@prisma/client": "5.18.0",
-    "@supabase/supabase-js": "^2.48.1",
-    "axios": "^1.7.9",
     "jotai": "^2.12.1",
     "next": "15.1.7",
     "primereact": "^10.9.2",
