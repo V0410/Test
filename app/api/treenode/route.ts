@@ -3,6 +3,63 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
     try {
+        // First, check if there's any data in the database
+        const count = await prisma.treeNode.count();
+        
+        // If no data exists, create initial data
+        if (count === 0) {
+            // Create root nodes
+            const root1 = await prisma.treeNode.create({
+                data: {
+                    key: '56320ee9-6af6-11ed-a7ba-f220afe5e4a2',
+                    label: 'Root 1',
+                    id: '56320ee9-6af6-11ed-a7ba-f220afe5e4a2',
+                    parentId: null,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    icon: 'folder',
+                }
+            });
+
+            const root2 = await prisma.treeNode.create({
+                data: {
+                    key: '56320ee9-6af6-11ed-a7ba-f220afe5e4a4',
+                    label: 'Root 2',    
+                    id: '56320ee9-6af6-11ed-a7ba-f220afe5e4a4',
+                    parentId: null,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    icon: 'folder',
+                }
+            });
+
+            // Create child for root1
+            const child1 = await prisma.treeNode.create({
+                data: {
+                    key: '56320ee9-6af6-11ed-a7ba-f220afe5e4a5',
+                    label: 'Child 1',
+                    id: '56320ee9-6af6-11ed-a7ba-f220afe5e4a5',
+                    parentId: root1.id,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    icon: 'folder',
+                }
+            });
+
+            // Create grandchild
+            await prisma.treeNode.create({
+                data: {
+                    key: '56320ee9-6af6-11ed-a7ba-f220afe5e4a6',
+                    label: 'Grandchild 1',
+                    parentId: child1.id,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    icon: 'folder',
+                }
+            });
+        }
+
+        // Fetch all nodes
         const nodes = await prisma.treeNode.findMany({
             include: {
                 children: true
@@ -24,6 +81,7 @@ export async function GET() {
 
         return NextResponse.json(buildTree(rootNodes));
     } catch (error) {
+        console.error('Error in GET:', error);
         return NextResponse.json({ error: 'Failed to fetch nodes' }, { status: 500 });
     }
 }

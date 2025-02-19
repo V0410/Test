@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../prisma/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TreeNode {
+  id        String     @id @default(uuid())
+  key       String     @unique
+  label     String
+  icon      String?    @default("folder")
+  parentId  String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  parent    TreeNode?  @relation("TreeHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children  TreeNode[] @relation("TreeHierarchy")
+}

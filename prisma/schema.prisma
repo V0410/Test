@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../prisma/generated"
 }
 
 datasource db {
@@ -13,8 +14,8 @@ model TreeNode {
   label     String
   icon      String?    @default("folder")
   parentId  String?
-  parent    TreeNode?  @relation("TreeHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
-  children  TreeNode[] @relation("TreeHierarchy")
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-} 
+  parent    TreeNode?  @relation("TreeHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children  TreeNode[] @relation("TreeHierarchy")
+}
