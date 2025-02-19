@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "postinstall": "npx prisma generate",
     "dev": "npx prisma generate && next dev",
     "build": "npx prisma generate && next build",
